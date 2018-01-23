@@ -1,0 +1,134 @@
+@font-face {
+    font-family: Dosis-Bold;
+    src: url(Dosis-Bold.ttf);
+}
+@font-face {
+    font-family: Ubuntu-Medium;
+    src: url(Ubuntu-Medium.ttf);
+}
+@font-face {
+    font-family: Ubuntu;
+    src: url(Ubuntu-Regular.ttf);
+}
+body {
+    font-family: Ubuntu;
+    background: #263238;
+}
+.wrapper{
+    width: 100%;
+}
+.menu-principal {
+    font-family: Dosis-Bold;
+    width: 100%;
+}
+.menu-principal ul {
+    list-style: none;
+    background: #007a51;
+    overflow: hidden;
+    color: #fff;
+    padding: 0;
+    text-align: center;
+    margin: 0;
+    border-bottom: 4px solid #1c5a45;
+}
+.menu-principal ul li {
+    display: inline-block;
+    padding: 20px;
+}
+.menu-principal ul li:hover {
+    transition: 0.2s;
+    background: #1c5a45;
+    padding: 20px;
+    cursor: pointer;
+}
+.menu-principal ul li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+}
+.table-container {
+    color: #fff;
+}
+.table-hover {
+    background: #29353b;
+}
+.header-table {
+    position: relative;
+    margin-top: -30px;
+    margin-bottom: 30px;
+}
+.header-table h1{
+    color: #fff;
+    font-size: 50px;
+}
+.row{
+    padding: 5px;
+    color: #1a4234;
+    font-size: 20px;
+    font-family: Ubuntu-Medium;
+}
+.pedidos{
+    margin-bottom: 30px;
+}
+.col-md {
+    background: #fff;
+    padding: 50px;
+}
+.box-header {
+    border-bottom: 2px solid #1c5a45;
+}
+.col-md h1 {
+    font-family: Ubuntu-Medium;
+}
+.btn-primary {
+    margin-top: 10px;
+    background: #1c5a45;
+    border: none;
+    float: right;
+    padding: 10px;
+}
+.btn-default {
+    margin-top: 10px;
+    margin-right: 390px;
+    border: none;
+    float: left;
+    padding: 10px;
+}
+.btn-primary:hover {
+    background: #1d6a50;
+    border: none;
+}
+.btn-sm {
+    color: #fff;
+}
+.form-control:focus {
+    border-color: #1d6a50;
+    box-shadow: none;
+}
+.form-group {
+    padding: 10px;
+}
+.form-group input::-webkit-input-placeholder {
+    font-size: 14px;
+}
+.form-group select{
+    margin-top: 5px;
+}
+.modal .input {
+    width: 100%;
+}
+h1 {
+    color: #1c5a45;
+}
+.table-container{
+    padding: 50px;
+}
+.table-hover th:last-child, .table-hover td:last-child {
+    width: 20%;
+}
+.btn-warning, .btn-danger {
+    width: 70px;
+}
+.modal-content {
+    width: 800px;
+}

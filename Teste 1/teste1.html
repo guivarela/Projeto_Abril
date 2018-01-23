@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Controle de Estoque</title>
+        <link rel="stylesheet" href="_css/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="_css/teste1-style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script type='text/javascript' src="_script/angApps.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <header>
+                <nav class="menu-principal">
+                    <ul>
+                        <li><a href="teste1.html">Home</a></li>
+                        <li><a href="listarProdutos.html"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Produtos</a></li>
+                        <li><a href="listarClientes.html"><i class="fa fa-users" aria-hidden="true"></i> Clientes</a></li>
+                        <li><a href="listarPedidos.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Pedidos</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <div class="box-header">
+                        <h1><i class="fa fa-cart-plus" aria-hidden="true"></i> Novo Produto</h1>
+                    </div>
+                    <div class="form-group">
+                        <form id="cadastroProduto" method="post">
+                            <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" placeholder="nome do produto...">
+                                <label for="descricao">Descrição</label>
+                                <input type="text" class="form-control" id="descricao" name="descricao" placeholder="descrição...">
+                                <label for="preco">Preço</label>
+                                <input type="text" class="form-control" id="preco" name="preco" placeholder="00,00">
+                                <button type="submit" class="btn btn-primary">Adicionar Produto</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="box-header">
+                        <h1><i class="fa fa-user-plus" aria-hidden="true"></i> Novo Cliente</h1>
+                    </div>
+                        <div class="form-group">
+                            <form id="cadastroCliente" name="cadastroCliente" method="post">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" placeholder="nome do cliente...">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="exemplo@email.com">
+                                <label for="telefone">Telefone</label>
+                                <input type="text" class="form-control" id="telefone" name="telefone" maxlength="15" pattern="\([0-9]{2}\) [0-9]{4,6}-[0-9]{3,4}$" placeholder="xx xxxx-xxxx">
+                                <button type="submit" class="btn btn-primary">Adicionar Cliente</button>
+                            </form>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md pedidos" ng-app="carregaBanco">
+                    <div class="box-header">
+                        <h1><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Novo Pedido</h1>
+                    </div>
+                    <div class="form-group">
+                        <form id="cadastroPedido" name="cadastroPedido" method="post">
+                            <div ng-controller="carregaClientes">
+                                <label for="nome">Cliente</label>
+                                <select class="form-control" id="cliente" name="cliente" ng-model="sCliente" ng-options="x.Nome for x in clientes"/></select>
+                            </div>
+                            <div id="produtos" ng-controller="carregaProdutos">
+                                <label for="nome">Produto</label>
+                                <div class="produto">
+                                    <select id="produtoSelect" class="form-control" ng-model="sProduto" ng-options="x.Nome for x in produtos"/></select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Criar Pedido</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        $("#cadastroProduto").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type : 'POST',
+                data: $("#cadastroProduto").serialize(),
+                url : 'http://guilhermevarela.xyz/_php/cadastroProduto.php',
+                success : function(data){
+                    alert(data);
+                    location.reload();
+                }
+            });
+            return false;
+        });
+        $("#cadastroCliente").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type : 'POST',
+                data: $("#cadastroCliente").serialize(),
+                url : 'http://guilhermevarela.xyz/_php/cadastroCliente.php',
+                success : function(data){
+                    alert(data);
+                    location.reload();
+                }
+            });
+            return false;
+        });
+        $("#cadastroPedido").submit(function(e){
+            e.preventDefault();
+            var idCliente = $('[ng-controller="carregaClientes"]').scope().sCliente.Id;
+            var idProduto = $('[ng-controller="carregaProdutos"]').scope().sProduto.Id;
+            var fd = {'idCliente' : idCliente, 'idProduto': idProduto};
+
+            $.ajax({
+                type : 'POST',
+                data: fd,
+                url : 'http://guilhermevarela.xyz/_php/cadastroPedido.php',
+                success : function(data){
+                    alert(data);
+                    location.reload();
+                }
+            });
+            return false;
+        });
+        $('#telefone').keyup(function(e){
+            var ph = this.value.replace(/\D/g,'').substring(0,11);
+            // Backspace and Delete keys
+            var deleteKey = (e.keyCode == 8 || e.keyCode == 46);
+            var len = ph.length;
+            if(len==0){
+                ph=ph;
+            }else if(len<3){
+                ph='('+ph;
+            }else if(len==2){
+                ph = '('+ph + (deleteKey ? '' : ') ');
+            }else if(len<7){
+                ph='('+ph.substring(0,2)+') '+ph.substring(2,7);
+            }else if(len==7){
+                ph='('+ph.substring(0,2)+') '+ph.substring(2,7)+ (deleteKey ? '' : '-');
+            }else{
+                ph='('+ph.substring(0,2)+') '+ph.substring(2,7)+'-'+ph.substring(7,11);
+            }
+            this.value = ph;
+        });
+    </script>
+    </body>
+</html>

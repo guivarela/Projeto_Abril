@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Listar Clientes</title>
+<link rel="stylesheet" href="_css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="_css/teste1-style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script type='text/javascript' src="_script/angApps.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+		<header>
+			<nav class="menu-principal">
+				<ul>
+					<li><a href="teste1.html">Home</a></li>
+					<li><a href="listarProdutos.html"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Produtos</a></li>
+					<li><a href="listarClientes.html"><i class="fa fa-users" aria-hidden="true"></i> Clientes</a></li>
+					<li><a href="listarPedidos.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Pedidos</a></li>
+				</ul>
+			</nav>
+		</header>
+	</div>
+	<!-- UPDATE MODAL -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Atualizar Cliente #<span id="aId"></span></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<div class="form-group">
+	  		  	<form id="atualizarCliente" name="atualizarCliente" method="post">
+					<input type="hidden" id="id_atualizar" name="id_atualizar"></input>
+					<label for="aNome">Nome</label>
+					<input type="text" class="form-control" id="aNome" name="aNome" placeholder="nome do cliente...">
+					<label for="aEmail">Email</label>
+					<input type="email" class="form-control" id="aEmail" name="aEmail" placeholder="exemplo@email.com">
+					<label for="aTel">Telefone</label>
+					<input type="text" class="form-control" id="aTel" name="aTel" placeholder="(xx) xxxxx-xxxx">
+		  			<button type="submit" class="btn btn-primary">Atualizar</button>
+				</form>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		  </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- DELETE MODAL -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Deletar Cliente #<span id="dId"></span>?</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<table class="table table-sm table-bordered">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>E-mail</th>
+						<th>Telefone</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span id="dNome"></span></td>
+						<td><span id="dEmail"></span></td>
+						<td><span id="dTel"></span></td>
+					</tr>
+				</tbody>
+			</table>
+	      </div>
+	      <div class="modal-footer">
+		  <form id="deletarCliente" name="deletarCliente" method="post">
+			  <input type="hidden" name="id_excluir" id="id_excluir" />
+			  <button type="submit" class="btn btn-primary">Sim</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+		  </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="table-container">
+		<div class="header-table">
+			<span><h1><i class="fa fa-users" aria-hidden="true"></i> Clientes</h1></span>
+		</div>
+		<div class="table-responsive">
+			<div ng-app="carregaBanco" ng-controller="carregaClientes">
+                <table class="table table-hover">
+					<thead>
+						<tr>
+		                    <th>ID</th>
+		                    <th>Nome</th>
+		                    <th>E-mail</th>
+		                    <th>Telefone</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+		                <tr ng-repeat="x in clientes">
+		                    <td>{{ x.Id }}</td>
+		                    <td>{{ x.Nome }}</td>
+		                    <td>{{ x.Email }}</td>
+		                    <td>{{ x.Telefone }}</td>
+							<td><button ng-click="updateInfo(x.Id, x.Nome, x.Email, x.Telefone)" id="atualizar" type="button"
+								class="btn btn-outline-warning btn-sm" data-toggle="modal"
+								data-target="#updateModal">Atualizar</button>
+								<button ng-click="deleteInfo(x.Id, x.Nome, x.Email, x.Telefone)" id="deletar" type="button"
+									class="btn btn-outline-danger btn-sm" data-toggle="modal"
+									data-target="#deleteModal">Excluir</button>
+		                </tr>
+					</tbody>
+                </table>
+            </div>
+		</div>
+		<script type="text/javascript">
+			$("#deletarCliente").submit(function(e){
+	            e.preventDefault();
+	            $.ajax({
+	                type : 'POST',
+	                data: $("#deletarCliente").serialize(),
+	                url : 'http://guilhermevarela.xyz/_php/deletarCliente.php',
+	                success : function(data){
+	                    alert(data);
+	                    location.reload();
+	                }
+	            });
+	            return false;
+	        });
+			$("#atualizarCliente").submit(function(e){
+	            e.preventDefault();
+	            $.ajax({
+	                type : 'POST',
+	                data: $("#atualizarCliente").serialize(),
+	                url : 'http://guilhermevarela.xyz/_php/atualizarCliente.php',
+	                success : function(data){
+	                    alert(data);
+	                    location.reload();
+	                }
+	            });
+	            return false;
+	        });
+	        $('#aTel').keyup(function(e){
+	            var ph = this.value.replace(/\D/g,'').substring(0,11);
+	            // Backspace and Delete keys
+	            var deleteKey = (e.keyCode == 8 || e.keyCode == 46);
+	            var len = ph.length;
+	            if(len==0){
+	                ph=ph;
+	            }else if(len<3){
+	                ph='('+ph;
+	            }else if(len==2){
+	                ph = '('+ph + (deleteKey ? '' : ') ');
+	            }else if(len<7){
+	                ph='('+ph.substring(0,2)+') '+ph.substring(2,7);
+	            }else if(len==7){
+	                ph='('+ph.substring(0,2)+') '+ph.substring(2,7)+ (deleteKey ? '' : '-');
+	            }else{
+	                ph='('+ph.substring(0,2)+') '+ph.substring(2,7)+'-'+ph.substring(7,11);
+	            }
+	            this.value = ph;
+	        });
+		</script>
+</body>
+</html>

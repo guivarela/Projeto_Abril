@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Listar Pedidos</title>
+<link rel="stylesheet" href="_css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="_css/teste1-style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type='text/javascript' src="_script/angApps.js"></script>
+</head>
+<body  ng-app="carregaBanco">
+	<div class="wrapper">
+		<header>
+			<nav class="menu-principal">
+				<ul>
+					<li><a href="teste1.html">Home</a></li>
+					<li><a href="listarProdutos.html"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Produtos</a></li>
+					<li><a href="listarClientes.html"><i class="fa fa-users" aria-hidden="true"></i> Clientes</a></li>
+					<li><a href="listarPedidos.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Pedidos</a></li>
+				</ul>
+			</nav>
+		</header>
+	</div>
+	<!-- UPDATE MODAL -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Atualizar Pedido #<span id="aId"></span></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	  		  	<form id="atualizarPedido" name="atualizarProduto" method="post">
+	                <div class="col-md pedidos">
+	                    <div class="form-group">
+                            <div ng-controller="carregaClientes">
+                                <label for="nome">Cliente</label>
+                                <select class="form-control" id="cliente" name="cliente" ng-model="sCliente" ng-options="x.Nome for x in clientes"/></select>
+                            </div>
+                            <div ng-controller="carregaProdutos">
+                                <label for="nome">Produto</label>
+                                <div class="produto">
+                                    <select id="produtoSelect" class="form-control" ng-model="sProduto" ng-options="x.Nome for x in produtos"/></select>
+                                </div>
+                            </div>
+				  			<input type="hidden" name="id_atualizar" id="id_atualizar" />
+	                    </div>
+	                </div>
+					<button type="submit" class="btn btn-primary">Atualizar</button>
+				</form>
+	      </div>
+	      <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		  </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- DELETE MODAL -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Deletar Pedido #<span id="dId"></span>?</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<table class="table table-sm table-bordered">
+				<thead>
+					<tr>
+						<th>Nome Cliente</th>
+						<th>E-mail</th>
+						<th>Telefone</th>
+						<th>Nome Produto</th>
+						<th>Descricao</th>
+						<th>Preco</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span id="dNomeC"></span></td>
+						<td><span id="dEmail"></span></td>
+						<td><span id="dTel"></span></td>
+						<td><span id="dNomeP"></span></td>
+						<td><span id="dDesc"></span></td>
+						<td><span id="dPreco"></span></td>
+					</tr>
+				</tbody>
+			</table>
+	      </div>
+	      <div class="modal-footer">
+		  <form id="deletarPedido" name="deletarPedido" method="post">
+			  <input type="hidden" name="id_excluir" id="id_excluir" />
+			  <button type="submit" class="btn btn-primary">Sim</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+		  </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="table-container">
+		<div class="header-table">
+			<span><h1><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Pedidos</h1></span>
+		</div>
+		<div class="table-responsive">
+			<div ng-controller="carregaPedidos">
+                <table class="table table-hover">
+					<thead>
+						<tr>
+		                    <th>ID</th>
+		                    <th>Cliente</th>
+		                    <th>Email</th>
+		                    <th>Telefone</th>
+		                    <th>Produto</th>
+		                    <th>Descrição</th>
+		                    <th>Preço</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+		                <tr ng-repeat="x in pedidos">
+		                    <td>{{ x.Id }}</td>
+		                    <td>{{ x.NomeCliente }}</td>
+		                    <td>{{ x.EmailCliente }}</td>
+		                    <td>{{ x.TelCliente }}</td>
+		                    <td>{{ x.NomeProduto }}</td>
+		                    <td>{{ x.DescricaoProduto }}</td>
+		                    <td>{{ x.PrecoProduto }}</td>
+							<td><button ng-click="updateInfo(x.Id, x.NomeCliente, x.EmailCliente, x.TelCliente, x.NomeProduto, x.DescricaoProduto, x.PrecoProduto)" id="atualizar" type="button"
+								class="btn btn-outline-warning btn-sm" data-toggle="modal"
+								data-target="#updateModal">Atualizar</button>
+								<button ng-click="deleteInfo(x.Id, x.NomeCliente, x.EmailCliente, x.TelCliente, x.NomeProduto, x.DescricaoProduto, x.PrecoProduto)" id="deletar" type="button"
+									class="btn btn-outline-danger btn-sm" data-toggle="modal"
+									data-target="#deleteModal">Excluir</button></td>
+		                </tr>
+					</tbody>
+                </table>
+            </div>
+		</div>
+		<script type="text/javascript">
+			$("#deletarPedido").submit(function(e){
+	            e.preventDefault();
+	            $.ajax({
+	                type : 'POST',
+	                data: $("#deletarPedido").serialize(),
+	                url : 'http://guilhermevarela.xyz/_php/deletarPedido.php',
+	                success : function(data){
+	                    alert(data);
+	                    location.reload();
+	                }
+	            });
+	            return false;
+	        });
+	        $("#atualizarPedido").submit(function(e){
+	            e.preventDefault();
+				var idPedido = document.getElementById("id_atualizar").value;
+	            var idCliente = $('[ng-controller="carregaClientes"]').scope().sCliente.Id;
+	            var idProduto = $('[ng-controller="carregaProdutos"]').scope().sProduto.Id;
+	            var fd = {'id_atualizar' : idPedido, 'idCliente' : idCliente, 'idProduto': idProduto};
+
+	            $.ajax({
+	                type : 'POST',
+	                data: fd,
+	                url : 'http://guilhermevarela.xyz/_php/atualizarPedido.php',
+	                success : function(data){
+	                    alert(data);
+	                    location.reload();
+	                }
+	            });
+	            return false;
+	        });
+		</script>
+</body>
+</html>
